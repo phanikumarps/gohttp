@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gohttp
+  labels:
+    app: gohttp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gohttp
+  template:
+    metadata:
+      labels:
+        app: gohttp
+    spec:
+      containers:
+        - image: phanikumarps/gohttp:latest #change it to your image
+          imagePullPolicy: Always
+          name: gohttp
+          ports:
+            - name: http
+              containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gohttp
+  labels:
+    app: gohttp
+spec:
+  ports:
+    - name: http
+      port: 3000
+      targetPort: 3000
+      protocol: TCP
+  selector:
+    app: gohttp
